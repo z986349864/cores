@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: core
+  redis:
+    host: 192.168.1.11
+    port: 6379
+    database: 0
+    timeout: 3000
+    redisson:
+      config:
+        # file: classpath:redisson.yml
+        singleServerConfig:
+          # 数据库编号
+          database: 0
+          # 节点地址
+          address: redis://192.168.1.11:6379
