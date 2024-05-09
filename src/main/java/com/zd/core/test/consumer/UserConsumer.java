@@ -23,6 +23,5 @@ public class UserConsumer extends AbstractBaseConsumer<List<User>> {
     @Override
     public void consumer(List<User> userList) {
         userList.forEach(u -> System.err.println("======================="+ u +"===================="));
-
     }
 }

@@ -4,7 +4,7 @@ spring:
   application:
     name: core
   redis:
-    host: 192.168.1.11
+    host: 127.0.0.1
     port: 6379
     database: 0
     timeout: 3000
@@ -15,9 +15,9 @@ spring:
           # 数据库编号
           database: 0
           # 节点地址
-          address: redis://192.168.1.11:6379
+          address: redis://127.0.0.1:6379
   rabbitmq:
-    host: 192.168.1.11
+    host: 127.0.0.1
     port: 5672
     virtual-host: /
     # ziji peizhi

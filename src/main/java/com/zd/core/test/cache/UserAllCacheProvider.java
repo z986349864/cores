@@ -14,9 +14,10 @@ public class UserAllCacheProvider implements ICacheDataProvider<String, List<Use
 
 
     Logger logger = LoggerFactory.getLogger(UserAllCacheProvider.class);
-/*
-    @Autowired
-    private InvokerProxy invokerProxy;*/
+
+    /**
+     * 可以调用别的微服务，确保最终一致性Proxy 。现在为测试
+    * */
 
     @Override
     public List<User> get(String key) {
@@ -24,11 +25,9 @@ public class UserAllCacheProvider implements ICacheDataProvider<String, List<Use
         user.setName("ceshi11");
         user.setId(22);
         List<User> userList = Arrays.asList(user);
-        /*Response<List<DataCenterConfigDTO>> response = invokerProxy.getAll();
-        if (response.isSuccess() && !CollectionUtils.isEmpty(response.getResult())) {
-            return response.getResult();
-        }
-        logger.error("AllDataCenterConfigCacheProvider  get error:" + JSONObject.toJSONString(response));
+        /**
+         * 判断调用结果是否正确，正确返回，异常打印日志即可。
+         * 通过xxljob 来处理失败消息。如重发5次还是失败则人工介入
         */
         return userList;
     }
