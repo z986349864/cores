@@ -16,3 +16,36 @@ spring:
           database: 0
           # 节点地址
           address: redis://192.168.1.11:6379
+  rabbitmq:
+    host: 192.168.1.11
+    port: 5672
+    virtual-host: /
+    # ziji peizhi
+    enabled: true
+    exchangeName: cores-user-exhcange-direct
+    userQueueName: cores-user-queue-userList
+    userRoutingKey: cores-user-queue-userList
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis-plus:
+  # 指定 Mapper XML 文件的位置，使用 classpath 通配符指定路径
+  mapper-locations: classpath:/mappers/*.xml
+  # 指定实体类的包路径，用于自动扫描并注册类型别名
+  type-aliases-package: com.zd.core.*
+  global-config:
+    db-config:
+      id-type: input
+      # 驼峰下划线转换（将数据库字段的下划线命名规则转换为 Java 实体类属性的驼峰命名规则）
+      db-column-underline: true
+      # 刷新 mapper
+      refresh-mapper: true
+  configuration:
+    # 将 Java 实体类属性的驼峰命名规则转换为数据库字段的下划线命名规则
+    map-underscore-to-camel-case: true
+    # 查询结果中包含空值的列，在映射的时候，不会映射这个字段
+    call-setters-on-nulls: true
+    # 开启 sql 日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

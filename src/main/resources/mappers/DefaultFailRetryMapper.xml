@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zd.core.mq.failretry.dao.DefaultFailRetryDao">
+
+    <resultMap id="failRetryResultMap" type="com.zd.core.mq.failretry.entity.FailRetryEntity">
+        <id property="id" column="id" jdbcType="VARCHAR" />
+        <result property="businessType" column="business_type" jdbcType="INTEGER" />
+        <result property="businessId" column="business_id" jdbcType="VARCHAR" />
+        <result property="params" column="params" jdbcType="VARCHAR" />
+        <result property="status" column="status" jdbcType="INTEGER" />
+        <result property="failReason" column="fail_reason" jdbcType="VARCHAR" />
+        <result property="retryTimes" column="retry_times" jdbcType="INTEGER" />
+        <result property="maxRetryTimes" column="max_retry_times" jdbcType="INTEGER" />
+        <result property="retryTime" column="retry_time" jdbcType="TIMESTAMP" />
+        <result property="active" column="is_active" jdbcType="INTEGER" />
+        <result property="remark" column="remark" jdbcType="VARCHAR" />
+        <result property="createUserCode" column="create_user_code" jdbcType="VARCHAR" />
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+        <result property="modifyUserCode" column="modify_user_code" jdbcType="VARCHAR" />
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!--获取指定时间段内的需要重试的数据-->
+    <select id="listNeedRetry" resultMap="failRetryResultMap">
+        select id, business_type, business_id, params, status, fail_reason, retry_times, max_retry_times, retry_time,
+               is_active, remark, create_user_code, create_time, modify_user_code, modify_time
+        from t_vos_common_fail_retry
+        where is_active = 1 and status = 0
+          and business_type = #{businessType, jdbcType=INTEGER}
+          and retry_times &lt; max_retry_times
+          and retry_time between from_unixtime(#{startTime, jdbcType=INTEGER})
+            and from_unixtime(#{endTime, jdbcType=INTEGER})
+    </select>
+
+    <!--查询此条业务数据是否有失败记录-->
+    <select id="queryExistFailEntity" resultMap="failRetryResultMap">
+        select id, business_type, business_id, params, status, fail_reason, retry_times, max_retry_times, retry_time,
+               is_active, remark, create_user_code, create_time, modify_user_code, modify_time
+        from t_vos_common_fail_retry
+        where is_active = 1
+          and business_type = #{businessType, jdbcType=INTEGER}
+          and business_id = #{businessId, jdbcType=INTEGER}
+    </select>
+
+    <!--插入新的失败记录，如果存在则忽略-->
+    <insert id="insertFailRetry" parameterType="com.zd.core.mq.failretry.entity.FailRetryEntity">
+        insert ignore into t_vos_common_fail_retry (id,
+                                                    business_type,
+                                                    business_id,
+                                                    params,
+                                                    status,
+                                                    fail_reason,
+                                                    retry_times,
+                                                    max_retry_times,
+                                                    retry_time,
+                                                    is_active,
+                                                    remark,
+                                                    create_time,
+                                                    create_user_code,
+                                                    modify_time,
+                                                    modify_user_code)
+        values (#{id, jdbcType=VARCHAR},
+        #{businessType, jdbcType=INTEGER},
+        #{businessId, jdbcType=VARCHAR},
+        #{params, jdbcType=VARCHAR},
+        #{status, jdbcType=INTEGER},
+        #{failReason, jdbcType=VARCHAR},
+        #{retryTimes, jdbcType=INTEGER},
+        #{maxRetryTimes, jdbcType=INTEGER},
+        #{retryTime, jdbcType=TIMESTAMP},
+        1,
+        #{remark, jdbcType=VARCHAR},
+        #{createTime, jdbcType=TIMESTAMP},
+        #{createUserCode, jdbcType=VARCHAR},
+        #{modifyTime, jdbcType=TIMESTAMP},
+        #{modifyUserCode, jdbcType=VARCHAR})
+    </insert>
+
+    <!--更新为处理成功-->
+    <update id="updateSuccess">
+        update t_vos_common_fail_retry
+        set status = #{status, jdbcType=INTEGER},
+            retry_times = #{retryTimes, jdbcType=INTEGER},
+            modify_time = #{modifyTime, jdbcType=TIMESTAMP} ,
+            modify_user_code = #{modifyUserCode, jdbcType=VARCHAR}
+        where id = #{id, jdbcType=VARCHAR}
+    </update>
+
+    <!--更新为重试失败-->
+    <update id="updateFailAgain">
+        update t_vos_common_fail_retry
+        set retry_times = #{retryTimes, jdbcType=INTEGER},
+            fail_reason = #{failReason, jdbcType=VARCHAR},
+            retry_time = #{retryTime, jdbcType=TIMESTAMP},
+            modify_time = #{modifyTime, jdbcType=TIMESTAMP} ,
+            modify_user_code = #{modifyUserCode, jdbcType=VARCHAR}
+        where id = #{id, jdbcType=VARCHAR} and max_retry_times>=#{retryTimes}
+    </update>
+
+    <select id="queryFailRetryEntityByTime" parameterType="com.zd.core.mq.failretry.dto.FailRetryDto"
+            resultMap="failRetryResultMap">
+        select id, business_type, business_id, params, status, fail_reason, retry_times, max_retry_times, retry_time,
+        is_active, remark, create_user_code, create_time, modify_user_code, modify_time
+        from t_vos_common_fail_retry
+        where is_active = 1
+
+        <choose>
+            <when test="businessId != null and businessId != '' and businessId != 'null'">
+                and business_id like concat( #{businessId,jdbcType=VARCHAR}, '%')
+            </when>
+            <otherwise>
+                <if test="businessType != null">
+                    and business_type =#{businessType}
+                </if>
+                <if test="status != null">
+                    and status =#{status}
+                </if>
+                <if test="startTime != null">
+                    and retry_time <![CDATA[>=]]> from_unixtime(#{startTime,jdbcType=INTEGER},'%Y-%m-%d %H:%i:%s')
+                </if>
+                <if test="endTime != null">
+                    and retry_time <![CDATA[<=]]> from_unixtime(#{endTime, jdbcType=INTEGER},'%Y-%m-%d %H:%i:%s')
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+
+    <update id="updateRetryTimesById" parameterType="map">
+        update t_vos_common_fail_retry
+        set retry_times = 0,
+            modify_time = #{modifyTime, jdbcType=TIMESTAMP},
+            retry_time = #{retryTime, jdbcType=TIMESTAMP},
+            modify_user_code = #{modifyUserCode, jdbcType=VARCHAR}
+        where is_active = 1 and id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

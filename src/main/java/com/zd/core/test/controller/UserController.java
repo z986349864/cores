@@ -1,17 +1,21 @@
 package com.zd.core.test.controller;
 
-import com.zd.core.cache.CacheKey;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.zd.core.config.BusinessQueueProperties;
 import com.zd.core.model.User;
+import com.zd.core.mq.constant.FailRetryType;
+import com.zd.core.mq.producer.IMessageProducer;
+import com.zd.core.mq.producer.RabbitMessage;
 import com.zd.core.test.cache.UserAllCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
-/**
- * test
- */
 @RestController
 @RequestMapping("/")
 public class UserController {
@@ -19,19 +23,34 @@ public class UserController {
     @Autowired
     private UserAllCache userAllCache;
 
-    @RequestMapping("/getUserAll")
-    public List<User> getUserAll() {
-        String userId = "test";
-        String userName = "zhangSan";
-        List<User> userList = userAllCache.get(new CacheKey(userId, userName).generateKey());
-        return userList;
+    @Autowired
+    private IMessageProducer msgProducer;
+
+    @Autowired
+    private BusinessQueueProperties queueProperties;
+
+
+    @GetMapping("/getUserAll")
+    public String getUserAll() {
+        List<User> userList = userAllCache.get("ALL");
+        String s = JSONObject.toJSONString(userList);
+        return s;
     }
 
-    @RequestMapping("/getUserAll1")
-    public List<User> getUserAll1() {
-        String userId = "test";
-        String userName = "zhangSan";
-        List<User> userList = userAllCache.get(new CacheKey(userId, userName).generateKey());
-        return userList;
+    @GetMapping("/sendMsg")
+    public String sendMsg() {
+        String id = UUID.randomUUID().toString();
+        List<User> userList = userAllCache.get("ALL");
+        RabbitMessage<List<User>> msg = new RabbitMessage<>(
+                id,
+                FailRetryType.USER_ALL_FAIL,
+                userList,
+                queueProperties.getExchangeName(),
+                queueProperties.getUserRoutingKey()
+        );
+        msgProducer.sendMessageAfterTransactionCommitted(msg);
+
+        return "success";
     }
+
 }
