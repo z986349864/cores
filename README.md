@@ -1,5 +1,5 @@
 # cores
-redis和rabbitmq公司使用：
+redis、rabbitmq和redisson Lock公司使用：
     redis 封装的好处：
     1.获取缓存都自动加redisson锁
     2.注入自己创建(UserAllCache)后，根据编写的代码自动查询如无缓存，则查询自己创建的(UserAllCacheProvider)返回的数据，

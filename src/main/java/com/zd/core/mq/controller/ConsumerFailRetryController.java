@@ -1,7 +1,6 @@
-package com.zd.core.test.controller;
+package com.zd.core.mq.controller;
 
 import com.zd.core.mq.consumer.IConsumerRetryService;
-import com.zd.core.mq.controller.BasicController;
 import com.zd.core.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
