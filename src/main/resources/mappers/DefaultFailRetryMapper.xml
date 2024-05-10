@@ -30,8 +30,9 @@
         where is_active = 1 and status = 0
           and business_type = #{businessType, jdbcType=INTEGER}
           and retry_times &lt; max_retry_times
-          and retry_time between from_unixtime(#{startTime, jdbcType=INTEGER})
-            and from_unixtime(#{endTime, jdbcType=INTEGER})
+          and retry_time > #{startTime, jdbcType=VARCHAR}
+          and #{endTime, jdbcType=VARCHAR} > retry_time
+
     </select>
 
     <!--查询此条业务数据是否有失败记录-->

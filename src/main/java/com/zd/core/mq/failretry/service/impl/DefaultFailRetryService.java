@@ -36,7 +36,7 @@ public class DefaultFailRetryService implements IFailRetryService {
      * @param endTime   要求重试时间-终止
      */
     @Override
-    public List<FailRetryEntity> listNeedRetry(int businessType, long startTime, long endTime) {
+    public List<FailRetryEntity> listNeedRetry(int businessType, String startTime, String endTime) {
         return defaultFailRetryDao.listNeedRetry(businessType, startTime, endTime);
     }
 

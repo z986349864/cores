@@ -5,6 +5,7 @@ import com.zd.core.mq.failretry.entity.FailRetryEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +21,8 @@ public interface DefaultFailRetryDao {
      * @return
      */
     List<FailRetryEntity> listNeedRetry(@Param("businessType") int businessType,
-                                        @Param("startTime") long startTime,
-                                        @Param("endTime") long endTime);
+                                        @Param("startTime") String startTime,
+                                        @Param("endTime") String endTime);
 
     /**
      * 查询出是已存在的失败重试记录

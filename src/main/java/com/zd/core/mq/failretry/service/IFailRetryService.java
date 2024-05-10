@@ -15,7 +15,7 @@ public interface IFailRetryService {
      * @param startTime     要求重试时间-起始
      * @param endTime       要求重试时间-终止
      */
-    List<FailRetryEntity> listNeedRetry(int businessType, long startTime, long endTime);
+    List<FailRetryEntity> listNeedRetry(int businessType, String startTime, String endTime);
 
     /**
      * 处理重试结果

@@ -1,5 +1,7 @@
 package com.zd.core.mq.consumer;
 
+import java.util.Date;
+
 public interface IConsumerRetryService {
 
     /**
@@ -10,5 +12,5 @@ public interface IConsumerRetryService {
      * @param businessType
      * @return void
      */
-    void retry(Long lastSendTime, Long thisTime, Integer businessType);
+    void retry(String lastSendTime, String thisTime, Integer businessType);
 }

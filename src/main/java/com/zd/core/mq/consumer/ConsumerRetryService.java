@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,7 +65,7 @@ public class ConsumerRetryService implements IConsumerRetryService, ApplicationC
      * @date 2020/6/11
      */
     @Override
-    public void retry(Long lastSendTime, Long thisTime, Integer businessType) {
+    public void retry(String lastSendTime, String thisTime, Integer businessType) {
 
         List<FailRetryEntity> failRetryEntities = failRetryService.listNeedRetry(businessType, lastSendTime, thisTime);
         if (CollectionUtils.isEmpty(failRetryEntities)) {
