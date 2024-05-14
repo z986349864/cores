@@ -2,6 +2,7 @@ package com.zd.core.test.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.zd.core.annotation.RedisCache;
 import com.zd.core.config.BusinessQueueProperties;
 import com.zd.core.constant.MessageConstants;
 import com.zd.core.lock.IDistributedLockExecutor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +38,16 @@ public class UserController extends BasicController {
 
     @Autowired
     private BusinessQueueProperties queueProperties;
+
+    @RedisCache
+    @GetMapping("/getCache")
+    public List<User> getCache() {
+        User user = new User();
+        user.setName("ceshi22");
+        user.setId(33);
+        List<User> userList = Arrays.asList(user);
+        return userList;
+    }
 
     @GetMapping("/findUserTest")
     public Response getUserTest() {
