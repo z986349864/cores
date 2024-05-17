@@ -12,8 +12,6 @@ public class DefaultDistributedIdGenerateService implements IDistributedIdGenera
      * 生成主键
      *
      * @return
-     * @author 陈宇霖
-     * @date 2019年01月02日20:43:24
      */
     @Override
     public String generate() {

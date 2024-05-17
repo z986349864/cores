@@ -1,6 +1,5 @@
 package com.zd.core.test.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zd.core.annotation.RedisCache;
 import com.zd.core.config.BusinessQueueProperties;
@@ -15,11 +14,9 @@ import com.zd.core.response.Response;
 import com.zd.core.test.cache.UserAllCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,12 +38,11 @@ public class UserController extends BasicController {
 
     @RedisCache
     @GetMapping("/getCache")
-    public List<User> getCache() {
+    public User getCache() {
         User user = new User();
         user.setName("ceshi22");
         user.setId(33);
-        List<User> userList = Arrays.asList(user);
-        return userList;
+        return user;
     }
 
     @GetMapping("/findUserTest")

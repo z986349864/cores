@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.nio.file.OpenOption;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class CoreApplicationTests {
@@ -19,6 +21,19 @@ class CoreApplicationTests {
     @Autowired
     RedissonClient redissonClient;
 
+    @Test
+    void test() {
+        User user = new User();
+        user.setId(22);
+        user.setName("哈哈2222");
+
+
+        User user1 = new User();
+        user1.setId(1);
+        user1.setName("哈哈");
+        User u = Optional.ofNullable(user).orElse(user1);
+        System.out.println(u);
+    }
 
     @Test
     void redissonTest() {
