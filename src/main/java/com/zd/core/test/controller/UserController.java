@@ -1,5 +1,6 @@
 package com.zd.core.test.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSONObject;
 import com.zd.core.annotation.RedisCache;
 import com.zd.core.config.BusinessQueueProperties;
@@ -12,14 +13,21 @@ import com.zd.core.mq.producer.IMessageProducer;
 import com.zd.core.mq.producer.RabbitMessage;
 import com.zd.core.response.Response;
 import com.zd.core.test.cache.UserAllCache;
+import groovy.util.logging.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
+@Log4j
 @RestController
 @RequestMapping("/")
 public class UserController extends BasicController {
@@ -35,6 +43,16 @@ public class UserController extends BasicController {
 
     @Autowired
     private BusinessQueueProperties queueProperties;
+
+
+    //导出
+    @GetMapping("/exportUser")
+    public void exportUser() {
+        List<User> userList = userAllCache.get("ALL");
+        //数据导出
+        export(userList, "用户列表", "用户列表");
+
+    }
 
     @RedisCache
     @GetMapping("/getCache")
@@ -76,6 +94,31 @@ public class UserController extends BasicController {
         msgProducer.sendMessageAfterTransactionCommitted(msg);
 
         return "success";
+    }
+
+
+    /**
+     * sku商品列表导出
+     * @param userList
+     */
+    private <T> void export(List<T> userList,String fileName,String sheetName) {
+        try {
+            if(CollectionUtils.isEmpty(userList)){
+                return;
+            }
+            //获取泛型参数类型
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletResponse response = servletRequestAttributes.getResponse();
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("UTF-8");
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+
+
+            EasyExcel.write(response.getOutputStream(), userList.get(0).getClass()).sheet(sheetName).doWrite(userList);
+        }catch (Exception e){
+            log.error("user queryList export error",e);
+        }
     }
 
 }

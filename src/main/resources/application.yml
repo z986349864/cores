@@ -30,6 +30,15 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
+    #hikari数据源特性配置
+    hikari:
+      maximum-pool-size: 100 #最大连接数,默认值10.
+      minimum-idle: 20 #最小空闲连接，默认值10.
+      connection-timeout: 60000 #连接超时时间(毫秒),默认值30秒.
+      #空闲连接超时时间，默认值600000(10分钟),只有空闲连接数大于最大连接数且空闲时间超过该值，才会被释放
+      #如果大于等于 max-lifetime 且 max-lifetime>0,则会被重置为0.
+      idle-timeout: 600000
+      max-lifetime: 3000000 #连接最大存活时间,默认值30分钟.设置应该比mysql设置的超时时间短
 mybatis-plus:
   # 指定 Mapper XML 文件的位置，使用 classpath 通配符指定路径
   mapper-locations: classpath:/mappers/*.xml
