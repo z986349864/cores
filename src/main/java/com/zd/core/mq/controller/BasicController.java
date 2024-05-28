@@ -15,6 +15,9 @@ public class BasicController {
     public Response returnSuccess(String successMsg) {
         return returnSuccess(null, successMsg);
     }
+    public Response returnSuccess(Object object) {
+        return returnSuccess(object, null);
+    }
     public Response returnSuccess(Object object, String successMsg) {
         Response response = new Response();
         response.setSuccess(true);

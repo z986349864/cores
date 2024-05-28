@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zd.core.annotation.RedisCache;
 import com.zd.core.config.BusinessQueueProperties;
 import com.zd.core.constant.MessageConstants;
+import com.zd.core.excel.service.UserService;
 import com.zd.core.lock.IDistributedLockExecutor;
 import com.zd.core.model.User;
 import com.zd.core.mq.constant.FailRetryType;
@@ -16,11 +17,10 @@ import com.zd.core.test.cache.UserAllCache;
 import groovy.util.logging.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
@@ -44,8 +44,16 @@ public class UserController extends BasicController {
     @Autowired
     private BusinessQueueProperties queueProperties;
 
+    @Autowired
+    private UserService userService;
 
-    //导出
+   // 批量上传
+    @PostMapping("/batch-upload")
+    public Response<Boolean> batchUploadHsCode(@RequestPart MultipartFile file) {
+        return returnSuccess(userService.batchUploadUserList(file));
+    }
+
+    // 导出
     @GetMapping("/exportUser")
     public void exportUser() {
         List<User> userList = userAllCache.get("ALL");

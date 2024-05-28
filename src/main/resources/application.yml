@@ -58,3 +58,12 @@ mybatis-plus:
     call-setters-on-nulls: true
     # 开启 sql 日志
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 无法使用的服务
+sftp:
+  host: 192.168.1.4
+  port: 21
+  username: administrator
+  password: 1
+  uploadFileDir: C://Users//Administrator//Desktop//ftp
+  downloadFileBasePath: https://mf-seller-static-pre-release-hk.orangeconnex.com
+  templateDir: C://Users//Administrator//Desktop//ftp//templates
