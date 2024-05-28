@@ -314,7 +314,7 @@ public class FtpClient implements SftpAndFtpClient {
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             ftpClient.enterLocalPassiveMode();
             ftpClient.changeWorkingDirectory(directory);
-            return ftpClient.retrieveFileStream(directory + downloadFile);
+            return ftpClient.retrieveFileStream(downloadFile);
         } catch (FileNotFoundException e) {
             logger.error("没有找到" + directory + "文件",e);
             throw new RuntimeException(e);
