@@ -9,4 +9,7 @@ redis、rabbitmq和redisson Lock公司使用：
     2.生产者失败后自动保存到失败记录表中t_vos_common_fail_retry
     3.消费者消费失败后保存到失败记录表中t_vos_common_fail_retry
     4.提供重试接口，用于XXL-JOB使用。重试次数 5次。
+    excle导入导出功能：
+    1. 导出，根据VO上@ExcelProperty，设置导出的类。
+    2. 导入，导入失败后会自动导出失败的条目以及失败原因。(需要上传导出的模板)
     
