@@ -46,8 +46,6 @@ public abstract class AbstractBaseConsumer<T> implements ChannelAwareMessageList
      * @param message CorrelationId等同于业务的唯一id
      * @param channel
      * @return void
-     * @author clf
-     * @date 2020/6/11
      */
     @Override
     public void onMessage(Message message, Channel channel) throws Exception {

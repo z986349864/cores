@@ -61,8 +61,6 @@ public class ConsumerRetryService implements IConsumerRetryService, ApplicationC
      * @param thisTime
      * @param businessType
      * @return void
-     * @author clf
-     * @date 2020/6/11
      */
     @Override
     public void retry(String lastSendTime, String thisTime, Integer businessType) {

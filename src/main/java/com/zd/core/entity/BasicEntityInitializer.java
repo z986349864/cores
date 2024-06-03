@@ -19,7 +19,6 @@ public class BasicEntityInitializer {
      *
      * @param basicEntity
      * @param date
-     * @date 2018年06月20日17:21:12
      */
     public void initAdd(BasicEntity basicEntity, Date date) {
         basicEntity.setActive(ApplicationConstants.ACTIVE);
@@ -33,7 +32,6 @@ public class BasicEntityInitializer {
      * 初始化新增参数
      *
      * @param basicEntity
-     * @date 2018年06月20日17:21:12
      */
     public void initAdd(BasicEntity basicEntity) {
         initAdd(basicEntity, new Date());
@@ -57,7 +55,6 @@ public class BasicEntityInitializer {
      * 初始化新增参数
      *
      * @param basicEntity
-     * @date 2018年06月20日17:21:12
      */
     public void initModify(BasicEntity basicEntity) {
         Date date = new Date();
@@ -70,7 +67,6 @@ public class BasicEntityInitializer {
      * 初始化修改参数
      *
      * @param basicEntity
-     * @date 2018年06月20日17:21:12
      */
     public void initModify(BasicEntity basicEntity, Date date) {
         basicEntity.setModifyTime(date);
@@ -81,7 +77,6 @@ public class BasicEntityInitializer {
      * 初始化修改参数
      *0
      * @param basicEntity
-     * @date 2018年06月20日17:21:12
      */
     public void initModify(BasicEntity basicEntity, Date date , String userCode) {
         basicEntity.setModifyTime(date);

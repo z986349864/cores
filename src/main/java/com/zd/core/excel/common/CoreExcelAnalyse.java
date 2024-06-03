@@ -46,10 +46,8 @@ import static com.zd.core.excel.common.ErrorTypeEnum.INVALID_VALUE;
 import static com.zd.core.excel.common.ErrorTypeEnum.LENGTH_ERROR;
 
 /**
- * @author zhanglz
  * @Title: ExcelAnalyse
  * @Description: Excel工具类，检查并返回数据
- * @date 2019-12-16 19:13
  */
 @Component
 @Slf4j
@@ -576,8 +574,6 @@ public class CoreExcelAnalyse implements IExcelAnalyse{
      * 保存一个错误文件
      *
      * @return java.lang.String
-     * @author clf
-     * @date 2020/11/12
      */
     public <T> String saveFailedExcel(List<List> failedExcelData) {
 
@@ -659,7 +655,6 @@ public class CoreExcelAnalyse implements IExcelAnalyse{
      * 保存一个错误文件
      *
      * @return java.lang.String
-     * @date 2020/11/12
      */
     public <T> String saveFailedExcel(List<List> data, String language) {
 

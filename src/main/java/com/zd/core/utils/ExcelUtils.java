@@ -35,8 +35,6 @@ public class ExcelUtils {
     /**
      * @param multipartFile 输入流
      * @param startRowNum   开始读取的行(0开始) 不能小于0
-     * @author zhangchao
-     * @date 2017/11/17 20:17
      * Description: excel文件转换为一个map.  map的key为行数，value 中的 key 为列数，value中的value 为值
      */
     @Deprecated
@@ -223,8 +221,6 @@ public class ExcelUtils {
      * @param excelFile   输入流
      * @param startRowNum 开始读取的行(0开始) 不能小于0
      * @param maxSize     限定一个最大文件SIZE
-     * @author zhangchao
-     * @date 2017/11/17 20:17
      * Description: excel文件转换为一个map.  map的key为行数，value 中的 key 为列数，value中的value 为值
      */
     public static Map<Integer, Map<Integer, String>> readToMapByFileObj(Object[] excelFile,
@@ -238,8 +234,6 @@ public class ExcelUtils {
      * @param excelFile   输入流
      * @param startRowNum 开始读取的行(0开始) 不能小于0
      * @param maxSize     限定一个最大文件SIZE
-     * @author zhangchao
-     * @date 2017/11/17 20:17
      * Description: excel文件转换为一个map.  map的key为行数，value 中的 key 为列数，value中的value 为值
      */
     public static Map<Integer, Map<Integer, String>> readToMapByFileObj(Object[] excelFile,
@@ -335,8 +329,6 @@ public class ExcelUtils {
      * @param sql          需要执行的sql
      * @param params       sql参数，没有传递null
      * @param response
-     * @author mao.wang@newHoau.com.cn
-     * @date 2016年4月7日
      */
     public static void exportDataWithJdbc(JdbcTemplate jdbcTemplate,
                                           String fileName,
