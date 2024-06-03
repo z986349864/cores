@@ -66,4 +66,4 @@ sftp:
   password: 1
   uploadFileDir: C://Users//Administrator//Desktop//ftp
   downloadFileBasePath: https://mf-seller-static-pre-release-hk.orangeconnex.com
-  templateDir: C://Users//Administrator//Desktop//ftp//templates
+  templateDir: C:\\Users\\Administrator\\Desktop\\ftp\\templates\\

@@ -49,7 +49,8 @@ public class UserServiceImpl implements UserService {
             String id = dto.getId();
             String name = dto.getName();
             String analyseLanguage = dto.getAnalyseLanguage();
-            //ID 不存在或无效
+            //TODO 失败分2种，一种是严重的错误，不用读取里面的数据。一种是读取导入失败的数据
+            //TODO 下面的是严重错误，失败后直接返回
             if(StringUtils.isEmpty(id)){
                 String message = "ID IS NULL";
                 errorMap.put(dto.getLineNumber(),message);
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
             List<String> errorList = Lists.newArrayList();
             //name
+            //TODO 读取导入失败的数据
             if(!StringUtils.isEmpty(name)){
                 String message = "NAME IS NULL";
                 errorList.add(message);

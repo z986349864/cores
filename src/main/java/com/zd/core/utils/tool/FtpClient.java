@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.SocketException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -314,7 +317,11 @@ public class FtpClient implements SftpAndFtpClient {
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             ftpClient.enterLocalPassiveMode();
             ftpClient.changeWorkingDirectory(directory);
-            return ftpClient.retrieveFileStream(downloadFile);
+            Path path = Paths.get(directory+downloadFile+".xlsx");
+            InputStream inputStream = Files.newInputStream(path);
+            return inputStream;
+            //TODO ftp服务端放到linux服务器上，读取到 InputStream
+            /*return ftpClient.retrieveFileStream(downloadFile);*/
         } catch (FileNotFoundException e) {
             logger.error("没有找到" + directory + "文件",e);
             throw new RuntimeException(e);
